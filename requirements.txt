@@ -1,0 +1,21 @@
+# Movie Simulator with OpenAI Agents SDK - Phase 1 Requirements
+
+# OpenAI Agents SDK and core dependencies
+openai-agents>=0.0.17
+openai>=1.50.0
+pydantic>=2.5.0
+python-dotenv>=1.0.0
+
+# Async and utility libraries
+asyncio~=3.4.3
+
+# Development and testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+
+# Logging and CLI
+rich>=13.0.0
+
+# Type checking (development)
+mypy>=1.0.0
+black>=23.0.0 
