@@ -1,23 +1,29 @@
 """
-Movie Simulator with OpenAI Agents SDK
-A dynamic movie simulation system using AI agents.
+Movie Simulator Package
+Core package for the Movie Simulator application.
 """
+
+from .core.logger import get_logger
+
+# Initialize package logger
+logger = get_logger("MovieSimulator")
 
 __version__ = "0.1.0"
 __author__ = "Movie Simulator Team"
 
-# Import with error handling for development
 try:
+    # Import core components
     from .core.simulation import MovieSimulation
-    from .core.models.story_models import StoryState, CharacterProfile, SceneContext
+    from .core.models.story_models import (
+        CharacterProfile, 
+        CharacterRole, 
+        StoryState, 
+        StoryGenre,
+        MovieContext
+    )
     
-    __all__ = [
-        "MovieSimulation",
-        "StoryState", 
-        "CharacterProfile",
-        "SceneContext"
-    ]
+    __all__ = ['MovieSimulation', 'CharacterProfile', 'CharacterRole', 'StoryState', 'StoryGenre', 'MovieContext']
+    
 except ImportError as e:
-    # Handle import errors during development
-    print(f"Warning: Some imports failed: {e}")
+    logger.warning(f"Some imports failed: {e}", "import")
     __all__ = [] 

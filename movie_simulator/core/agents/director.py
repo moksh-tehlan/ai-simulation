@@ -1,5 +1,8 @@
 """
-Director Agent implementation for story orchestration.
+Director Agent for Movie Simulator
+
+The Director agent orchestrates story creation, character development,
+and narrative progression throughout the simulation.
 """
 import asyncio
 from datetime import datetime
@@ -17,7 +20,10 @@ from ..models.story_models import (
     StoryGenre,
     CharacterRole
 )
+from ..logger import get_logger, LogLevel
 
+# Initialize logger
+logger = get_logger("Director", LogLevel.INFO)
 
 @function_tool
 async def create_character_profile(
@@ -227,29 +233,3 @@ IMPORTANT:
         model=model,
         tools=[create_character_profile, establish_story_timeline, check_story_progress]
     )
-
-async def director_main():
-    story_state = StoryState(
-        title="Generated Story",
-        genre=StoryGenre.MYSTERY,  # Default, will be determined by director
-        setting="To be determined",
-        timeline=[],
-        current_beat="setup"
-    )
-
-    # Create movie context
-    context = MovieContext(
-        story_state=story_state,
-        characters={},
-        current_scene=None,
-        current_time=datetime.now()
-    )
-
-    director_agent = create_director_agent()
-    result = await Runner.run(director_agent, "simulate the story of avengers endgame movie but this time thanos wins", context=context)
-    print("____________________")
-    print(result)
-    print(f"""context: {context.to_dict()}""")
-
-# if __name__ == '__main__':
-#     asywncio.run(main())

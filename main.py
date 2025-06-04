@@ -9,15 +9,18 @@ import os
 from dotenv import load_dotenv
 
 from movie_simulator.core.agents.director import director_main
+from movie_simulator.core.logger import get_logger, LogLevel
 
 load_dotenv()
 from typing import Optional
 
+# Initialize logger
+logger = get_logger("Main", LogLevel.INFO)
+
 # Test imports and basic functionality
 def test_basic_functionality():
     """Test basic system functionality before running full simulation."""
-    print("🧪 BASIC FUNCTIONALITY TEST")
-    print("-" * 40)
+    logger.section_header("🧪 BASIC FUNCTIONALITY TEST", width=40)
     
     try:
         from movie_simulator.core.models.story_models import CharacterProfile, CharacterRole
@@ -35,16 +38,16 @@ def test_basic_functionality():
             fears=[],
             story_role=CharacterRole.PROTAGONIST
         )
-        print(f"✅ Character Model: {test_char.name} ({test_char.story_role.value})")
+        logger.success(f"Character Model: {test_char.name} ({test_char.story_role.value})", "test")
         
         # Test simulation creation
         simulation = MovieSimulation()
-        print(f"✅ Simulation System: Initialized")
+        logger.success("Simulation System: Initialized", "test")
         
         return True
         
     except Exception as e:
-        print(f"❌ Basic functionality test failed: {e}")
+        logger.error("Basic functionality test failed", "test", e)
         return False
 
 
@@ -54,21 +57,21 @@ async def run_full_simulation():
     # Check API key
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
-        print("❌ OPENAI_API_KEY environment variable not set")
+        logger.error("OPENAI_API_KEY environment variable not set", "config")
         return
     
-    print("✅ OpenAI API key configured")
+    logger.success("OpenAI API key configured", "config")
     
     # Check if agents are available
     try:
         from agents import Agent
-        print("✅ OpenAI Agents SDK available")
+        logger.success("OpenAI Agents SDK available", "api")
         agents_available = True
     except ImportError:
-        print("⚠️  OpenAI Agents SDK not available - using basic functionality")
+        logger.warning("OpenAI Agents SDK not available - using basic functionality", "api")
         agents_available = False
     
-    print("")
+    logger.blank_line()
     
     # Story seeds for testing
     story_seeds = [
@@ -78,39 +81,40 @@ async def run_full_simulation():
         "A family drama about three siblings reuniting to settle their father's estate, only to discover he had a secret family."
     ]
     
-    print("📖 AVAILABLE STORY SEEDS:")
+    logger.info("📖 AVAILABLE STORY SEEDS:", "story")
     for i, seed in enumerate(story_seeds, 1):
         preview = seed[:80] + "..." if len(seed) > 80 else seed
-        print(f"   {i}. {preview}")
+        logger.list_item(f"{i}. {preview}")
     
     # Use the first story seed for testing
     selected_story = story_seeds[0]
     preview = selected_story[:100] + "..." if len(selected_story) > 100 else selected_story
-    print(f"\n🎯 Selected Story: {preview}")
+    logger.info(f"🎯 Selected Story: {preview}", "story")
     
     # Run simulation
     from movie_simulator.core.simulation import MovieSimulation
     
-    print("\n" + "=" * 70)
+    logger.section_header("SIMULATION EXECUTION")
     simulation = MovieSimulation()
     result = await simulation.run_simulation(selected_story)
     
-    print("\n📋 FINAL SIMULATION OUTPUT:")
-    print("=" * 70)
-    print(result)
+    logger.section_header("📋 FINAL SIMULATION OUTPUT")
+    logger.info(result)
 
 
 async def main():
     """Main execution function."""
-    print("🎬 MOVIE SIMULATOR - PHASE 1 FOUNDATION")
-    print("=" * 70)
+    logger.section_header("🎬 MOVIE SIMULATOR - PHASE 1 FOUNDATION")
     
     # Test basic functionality first
     if not test_basic_functionality():
-        print("\n❌ Basic tests failed. Please check your setup.")
+        logger.blank_line()
+        logger.error("Basic tests failed. Please check your setup.", "test")
         return
     
-    print("\n🚀 Basic tests passed! Proceeding with full simulation...\n")
+    logger.blank_line()
+    logger.success("Basic tests passed! Proceeding with full simulation...", "test")
+    logger.blank_line()
     
     # Run full simulation
     await run_full_simulation()

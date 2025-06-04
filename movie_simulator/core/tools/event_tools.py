@@ -10,7 +10,10 @@ from enum import Enum
 import random
 
 from movie_simulator.core.models.story_models import MovieContext, StoryGenre, CharacterRole
+from movie_simulator.core.logger import get_logger
 
+# Initialize logger
+logger = get_logger("EventTools")
 
 class EventType(Enum):
     """Types of dramatic events that can be injected."""
@@ -164,10 +167,10 @@ class DramaticEventInjector:
                 "new_tension": new_tension if self._context else 0.5
             }
             
-            print(f"💥 DRAMATIC EVENT INJECTED!")
-            print(f"   Type: {selected_type.value.replace('_', ' ').title()}")
-            print(f"   Event: {event_description}")
-            print(f"   Tension: {old_tension:.2f} → {new_tension:.2f}")
+            logger.info("💥 DRAMATIC EVENT INJECTED!")
+            logger.info(f"   Type: {selected_type.value.replace('_', ' ').title()}")
+            logger.info(f"   Event: {event_description}")
+            logger.info(f"   Tension: {old_tension:.2f} → {new_tension:.2f}")
             
             return event_info
             
@@ -213,10 +216,10 @@ class DramaticEventInjector:
                 "new_tension": new_tension
             }
             
-            print(f"💥 CUSTOM EVENT INJECTED!")
-            print(f"   Type: {event_type.replace('_', ' ').title()}")
-            print(f"   Event: {description}")
-            print(f"   Tension: {old_tension:.2f} → {new_tension:.2f}")
+            logger.info("💥 CUSTOM EVENT INJECTED!")
+            logger.info(f"   Type: {event_type.replace('_', ' ').title()}")
+            logger.info(f"   Event: {description}")
+            logger.info(f"   Tension: {old_tension:.2f} → {new_tension:.2f}")
             
             return event_info
             
@@ -295,11 +298,11 @@ class DramaticEventInjector:
                 "new_tension": new_tension
             }
             
-            print(f"⚔️ CHARACTER CONFLICT CREATED!")
-            print(f"   Characters: {char1.name} vs {char2.name}")
-            print(f"   Type: {conflict_type.title()}")
-            print(f"   Conflict: {conflict_description}")
-            print(f"   Tension: {old_tension:.2f} → {new_tension:.2f}")
+            logger.info("⚔️ CHARACTER CONFLICT CREATED!")
+            logger.info(f"   Characters: {char1.name} vs {char2.name}")
+            logger.info(f"   Type: {conflict_type.title()}")
+            logger.info(f"   Conflict: {conflict_description}")
+            logger.info(f"   Tension: {old_tension:.2f} → {new_tension:.2f}")
             
             return conflict_info
             
@@ -364,11 +367,11 @@ class DramaticEventInjector:
                 "story_beat": current_beat
             }
             
-            print(f"🌪️ PLOT TWIST INJECTED!")
-            print(f"   Severity: {severity.title()}")
-            print(f"   Twist: {twist_description}")
-            print(f"   Beat: {current_beat}")
-            print(f"   Tension: {old_tension:.2f} → {new_tension:.2f}")
+            logger.info("🌪️ PLOT TWIST INJECTED!")
+            logger.info(f"   Severity: {severity.title()}")
+            logger.info(f"   Twist: {twist_description}")
+            logger.info(f"   Beat: {current_beat}")
+            logger.info(f"   Tension: {old_tension:.2f} → {new_tension:.2f}")
             
             return twist_info
             
