@@ -8,7 +8,6 @@ import asyncio
 import os
 from dotenv import load_dotenv
 
-from movie_simulator.core.agents.director import director_main
 from movie_simulator.core.logger import get_logger, LogLevel
 
 load_dotenv()
